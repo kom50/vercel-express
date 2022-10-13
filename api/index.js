@@ -14,6 +14,10 @@ app.get('/api/test', (req, res) => {
     res.send('<h1>Hello Bro</h1>')
 })
 
+app.get('/test', (req, res) => {
+    res.send('<h1>Hello OM</h1>')
+})
+
 app.listen(PORT, () => {
     console.log('listening on port - ' + PORT);
 })
