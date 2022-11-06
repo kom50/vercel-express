@@ -11,6 +11,68 @@
 <body>
     <h1 style=" text-align:center; font-size:42px;">🚀 Express JS App</h1>
     <p style="text-align:center; "> OM</p>
+    <input id="image" type="file">
+
+    <form action="/upload" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <input type="file" class="form-control-file" name="image">
+            <input type="text" class="form-control" placeholder="Number of speakers" name="nspeakers">
+            <input type="submit" value="Get me the stats!" class="btn btn-default">
+            <br>
+            <hr>
+
+        </div>
+    </form>
+    <h1>User store</h1>
+    <form action="/user" enctype="multipart/form-data" method="post">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Number of speakers" name="name"> <br>
+            <input type="email" class="form-control" placeholder="Number of speakers" name="email"> <br>
+            <input type="file" class="form-control-file" name="image"> <br>
+            <input type="submit" value="Add User" class="btn btn-default"> <br>
+        </div>
+    </form>
+
+    <script>
+        const input = document.getElementById('image')
+        let file;
+        input.oninput = (event) => {
+            console.log("🚀 ~ file: index.html ~ line 20 ~ event", event)
+            file = event.target.files[0]
+            console.log("🚀 ~ file: index.html ~ line 22 ~ file", file)
+            const d = new ArrayBuffer(file)
+            console.log("🚀 ~ file: index.html ~ line 22 ~ file", d)
+            console.log("d 😀 ", URL.createObjectURL(new Blob([d])))
+
+            const reader = new FileReader();
+            reader.addEventListener("loadend", (event) => {
+                console.log("🚀 ~ file: index.html ~ line 29 ~ reader.addEventListener ~ event", event)
+                console.log("🚀 ~ file: index.html ~ line 29 ~ reader.addEventListener ~ event", event.currentTarget.result)
+                // reader.result contains the contents of blob as a typed array
+
+
+                const res = (async function () {
+                    // return await (await fetch('http://localhost:5000/api')).json()
+
+                    const data = await fetch('/test', {
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        method: 'POST',
+                        body: JSON.stringify({
+                            name: 'om',
+                            vill: "India",
+                            data: JSON.stringify(event.currentTarget.result)
+                        })
+                    })
+                    return await data.text();
+                })()
+                console.log((async () => await res)())
+            });
+            reader.readAsBinaryString(file);
+        }
+    </script>
 </body>
 
 </html>
